@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/bottom_sheet.dart';
 import 'package:mytodo/settings.dart';
+import 'login_page.dart';
 import 'settings.dart';
 import 'add_task.dart';
 import 'home.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'BrandonGrotesque'
         ),
         debugShowCheckedModeBanner: false,
-        home:BottomSheetPage(),
+        home:LoginPage(),
     );
   }
 }
