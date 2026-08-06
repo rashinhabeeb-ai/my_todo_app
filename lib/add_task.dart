@@ -32,195 +32,197 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header: Title & Close Button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Add New Task',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: primaryBlue,
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header: Title & Close Button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Add New Task',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: primaryBlue,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: textSubtle),
-                    onPressed: () => Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => Home(),)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // Category/Tag Label
-              const Text(
-                'COGNITIVE CLARITY',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: primaryBlue,
-                  letterSpacing: 1.1,
+                    IconButton(
+                      icon: const Icon(Icons.close, color: textSubtle),
+                      onPressed: () => Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Home(),)),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 12),
 
-              // Task Title
-              _buildText('Task Title'),
-              const SizedBox(height: 6),
-              TextField(
-                controller: _titleController,
-                decoration: _inputDecoration('What needs to be done?'),
-
-              ),
-              const SizedBox(height: 16),
-
-              // Description
-              _buildText('Description'),
-              const SizedBox(height: 6),
-              TextField(
-                controller: _descriptionController,
-                maxLines: 3,
-                decoration: _inputDecoration('Add some details or notes...'),
-              ),
-              const SizedBox(height: 16),
-
-              // Due Date & Due Time Row
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildText('Due Date'),
-                        const SizedBox(height: 6),
-                        InkWell(
-                          onTap: _pickDate,
-                          borderRadius: BorderRadius.circular(10),
-                          child: _buildPickerContainer(
-                            text: _selectedDate == null
-                                ? 'mm/dd/yyyy'
-                                : "${_selectedDate!.month}/${_selectedDate!.day}/${_selectedDate!.year}",
-                            icon: Icons.calendar_today_outlined,
-                            isPlaceholder: _selectedDate == null,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildText('Due Time'),
-                        const SizedBox(height: 6),
-                        InkWell(
-                          onTap: _pickTime,
-                          borderRadius: BorderRadius.circular(10),
-                          child: _buildPickerContainer(
-                            text: _selectedTime == null
-                                ? '--:-- --'
-                                : _selectedTime!.format(context),
-                            icon: Icons.access_time_outlined,
-                            isPlaceholder: _selectedTime == null,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              // Priority Selection
-              _buildText('Priority'),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildPriorityButton('Low', Colors.green),
-                  _buildPriorityButton('Medium', Colors.blue),
-                  _buildPriorityButton('High', Colors.red),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              // Projects Selection
-              _buildText('Projects'),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(child: _buildProjectCard('Work', Icons.work_outline)),
-                  const SizedBox(width: 12),
-                  Expanded(child: _buildProjectCard('Personal', Icons.person_outline)),
-                ],
-              ),
-              const SizedBox(height: 24),
-
-              // Create Task Button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    if (_titleController.text.trim().isEmpty){
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Please enter a task title'))
-                      );
-                      return;
-                    }
-                    final DateTime now = DateTime.now();
-                    final DateTime dateToUse = _selectedDate ?? now;
-
-                    // Format as Month Day, Year (e.g., Oct 25, 2026)
-                    final List<String> months = [
-                      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                    ];
-                    final String formattedDate =
-                        "${months[dateToUse.month - 1]} ${dateToUse.day}, ${dateToUse.year}";
-
-                    // Format time: Use selected time or default to null/empty string
-                    final String? formattedTime = _selectedTime?.format(context);
-                   Navigator.pop(context,
-                    TaskItem(
-                        title: _titleController.text,
-                        description: _descriptionController.text,
-                        date:formattedDate,
-                    time: formattedTime));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 0,
-                  ),
-                  icon: const Icon(Icons.add, color: Colors.white),
-                  label: const Text(
-                    'Create Task',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                // Category/Tag Label
+                const Text(
+                  'COGNITIVE CLARITY',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: primaryBlue,
+                    letterSpacing: 1.1,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+
+                // Task Title
+                _buildText('Task Title'),
+                const SizedBox(height: 6),
+                TextField(
+                  controller: _titleController,
+                  decoration: _inputDecoration('What needs to be done?'),
+
+                ),
+                const SizedBox(height: 16),
+
+                // Description
+                _buildText('Description'),
+                const SizedBox(height: 6),
+                TextField(
+                  controller: _descriptionController,
+                  maxLines: 3,
+                  decoration: _inputDecoration('Add some details or notes...'),
+                ),
+                const SizedBox(height: 16),
+
+                // Due Date & Due Time Row
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildText('Due Date'),
+                          const SizedBox(height: 6),
+                          InkWell(
+                            onTap: _pickDate,
+                            borderRadius: BorderRadius.circular(10),
+                            child: _buildPickerContainer(
+                              text: _selectedDate == null
+                                  ? 'mm/dd/yyyy'
+                                  : "${_selectedDate!.month}/${_selectedDate!.day}/${_selectedDate!.year}",
+                              icon: Icons.calendar_today_outlined,
+                              isPlaceholder: _selectedDate == null,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildText('Due Time'),
+                          const SizedBox(height: 6),
+                          InkWell(
+                            onTap: _pickTime,
+                            borderRadius: BorderRadius.circular(10),
+                            child: _buildPickerContainer(
+                              text: _selectedTime == null
+                                  ? '--:-- --'
+                                  : _selectedTime!.format(context),
+                              icon: Icons.access_time_outlined,
+                              isPlaceholder: _selectedTime == null,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // Priority Selection
+                _buildText('Priority'),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildPriorityButton('Low', Colors.green),
+                    _buildPriorityButton('Medium', Colors.blue),
+                    _buildPriorityButton('High', Colors.red),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // Projects Selection
+                _buildText('Projects'),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(child: _buildProjectCard('Work', Icons.work_outline)),
+                    const SizedBox(width: 12),
+                    Expanded(child: _buildProjectCard('Personal', Icons.person_outline)),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+                // Create Task Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      if (_titleController.text.trim().isEmpty){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please enter a task title'))
+                        );
+                        return;
+                      }
+                      final DateTime now = DateTime.now();
+                      final DateTime dateToUse = _selectedDate ?? now;
+
+                      // Format as Month Day, Year (e.g., Oct 25, 2026)
+                      final List<String> months = [
+                        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                      ];
+                      final String formattedDate =
+                          "${months[dateToUse.month - 1]} ${dateToUse.day}, ${dateToUse.year}";
+
+                      // Format time: Use selected time or default to null/empty string
+                      final String? formattedTime = _selectedTime?.format(context);
+                     Navigator.pop(context,
+                      TaskItem(
+                          title: _titleController.text,
+                          description: _descriptionController.text,
+                          date:formattedDate,
+                      time: formattedTime));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    icon: const Icon(Icons.add, color: Colors.white),
+                    label: const Text(
+                      'Create Task',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

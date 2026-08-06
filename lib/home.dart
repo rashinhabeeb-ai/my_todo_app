@@ -27,7 +27,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<String> options = ['All', 'Today', 'Upcoming', 'Completed'];
   int selectindex = 0;
 
   List<TaskItem> tasksList = [
@@ -53,13 +52,39 @@ class _HomeState extends State<Home> {
     ),
   ];
 
+  int selectedCategory = 0;
+  final List<String> options = ['All', 'Today', 'Upcoming', 'Completed'];
+
+
+  void _showDialog (BuildContext contex, int index){
+    showDialog(context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete Task',
+            style: TextStyle(
+
+            ),),
+          actions: [
+            TextButton(onPressed: () {
+              Navigator.pop(context);
+              setState(() {
+                tasksList.removeAt(index);
+              });
+            },
+                child: Text("YES")),
+            TextButton(onPressed: () {
+              Navigator.pop(context);
+            },
+                child: Text("NO")),
+          ],
+        );
+      },);
+  }
   @override
   Widget build(BuildContext context) {
 
     final double h = MediaQuery.of(context).size.height;
     final double w = MediaQuery.of(context).size.width;
-    
-    
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FF),
@@ -209,15 +234,11 @@ class _HomeState extends State<Home> {
                         final task = tasksList[index];
                         return Slidable(
                           key: ValueKey(task.title),
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
+                          endActionPane: ActionPane(                ///slidable direction "endActionPane"
+                            motion:  StretchMotion(),
                             children: [
                               SlidableAction(
-                                onPressed: (context) {
-                                  setState(() {
-                                    tasksList.removeAt(index);
-                                  });
-                                },
+                                onPressed:(context) => _showDialog(context, index),
                                 backgroundColor: Colors.red,
                                 foregroundColor: Colors.white,
                                 icon: Icons.delete,

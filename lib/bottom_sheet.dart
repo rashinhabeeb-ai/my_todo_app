@@ -19,31 +19,33 @@ class _BottomSheetPageState extends State<BottomSheetPage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: pages[selectIndex],
-      backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
+    return SafeArea(
+      child: Scaffold(
+        body: pages[selectIndex],
         backgroundColor: Colors.white,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        onTap: (value){
-          selectIndex = value;
-          setState(() {
-
-          });
-        },
-        currentIndex: selectIndex,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home),
-          label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined),
-          label: 'Calender'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings),
-          label: 'Settings'),
-        ],
-      )
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          onTap: (value){
+            selectIndex = value;
+            setState(() {
+      
+            });
+          },
+          currentIndex: selectIndex,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home),
+            label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined),
+            label: 'Calender'),
+            BottomNavigationBarItem(icon: Icon(Icons.settings),
+            label: 'Settings'),
+          ],
+        )
+      ),
     );
   }
 }

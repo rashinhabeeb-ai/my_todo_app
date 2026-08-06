@@ -43,186 +43,188 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 90),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Header Section
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80',
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF8FAFC),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 90),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Header Section
+                    Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 20,
+                          backgroundImage: NetworkImage(
+                            'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80',
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        'Good morning',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF0F172A),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 0, height: 20),
-
-                  /// Calendar Card
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.02),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+                        const SizedBox(width: 12),
+                        const Text(
+                          'Good morning',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF0F172A),
+                          ),
                         ),
                       ],
                     ),
-                    child: Column(
-                      children: [
-                        // Month Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'October 2024',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF0F172A),
-                              ),
-                            ),
-                            Row(
-                              children: const [
-                                Icon(Icons.chevron_left, size: 20, color: Color(0xFF64748B)),
-                                SizedBox(width: 12),
-                                Icon(Icons.chevron_right, size: 20, color: Color(0xFF64748B)),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
+                    const SizedBox(width: 0, height: 20),
 
-                        // Weekdays Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: const [
-                            _WeekdayText('MO'),
-                            _WeekdayText('TU'),
-                            _WeekdayText('WE'),
-                            _WeekdayText('TH'),
-                            _WeekdayText('FR'),
-                            _WeekdayText('SA'),
-                            _WeekdayText('SU'),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-
-                        // Calendar Days Grid
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 35, // 4 offset blank days + 31 days
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 7,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
+                    /// Calendar Card
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.02),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
                           ),
-                          itemBuilder: (context, index) {
-                            final dayNumber = index - 3; // October 1st starts on Tuesday
-                            if (dayNumber < 1 || dayNumber > 31) {
-                              return const SizedBox.shrink();
-                            }
-
-                            final isSelected = dayNumber == _selectedDay;
-
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _selectedDay = dayNumber;
-                                });
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: isSelected ? const Color(0xFF0066CC) : Colors.transparent,
-                                  shape: BoxShape.circle,
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          // Month Header
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'October 2024',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF0F172A),
                                 ),
-                                child: Text(
-                                  '$dayNumber',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                                    color: isSelected ? Colors.white : const Color(0xFF334155),
+                              ),
+                              Row(
+                                children: const [
+                                  Icon(Icons.chevron_left, size: 20, color: Color(0xFF64748B)),
+                                  SizedBox(width: 12),
+                                  Icon(Icons.chevron_right, size: 20, color: Color(0xFF64748B)),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Weekdays Header
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: const [
+                              _WeekdayText('MO'),
+                              _WeekdayText('TU'),
+                              _WeekdayText('WE'),
+                              _WeekdayText('TH'),
+                              _WeekdayText('FR'),
+                              _WeekdayText('SA'),
+                              _WeekdayText('SU'),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Calendar Days Grid
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 35, // 4 offset blank days + 31 days
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 7,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                            ),
+                            itemBuilder: (context, index) {
+                              final dayNumber = index - 3; // October 1st starts on Tuesday
+                              if (dayNumber < 1 || dayNumber > 31) {
+                                return const SizedBox.shrink();
+                              }
+
+                              final isSelected = dayNumber == _selectedDay;
+
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedDay = dayNumber;
+                                  });
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: isSelected ? const Color(0xFF0066CC) : Colors.transparent,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    '$dayNumber',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                                      color: isSelected ? Colors.white : const Color(0xFF334155),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 24),
 
-                  /// Selected Date Title
-                  const Text(
-                    'Thursday, Oct 24',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0F172A),
+                    /// Selected Date Title
+                    const Text(
+                      'Thursday, Oct 24',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0F172A),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Selected Date',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Color(0xFF64748B),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Selected Date',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF64748B),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-                  /// Tasks List
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _tasks.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final task = _tasks[index];
-                      return _buildTaskCard(task);
-                    },
-                  ),
-                ],
+                    /// Tasks List
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _tasks.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final task = _tasks[index];
+                        return _buildTaskCard(task);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            /// Floating Action Button
-            Positioned(
-              right: 20,
-              bottom: 20,
-              child: FloatingActionButton(
-                onPressed: () {},
-                backgroundColor: const Color(0xFF0066CC),
-                elevation: 4,
-                shape: const CircleBorder(),
-                child: const Icon(Icons.add, color: Colors.white, size: 28),
+              /// Floating Action Button
+              Positioned(
+                right: 20,
+                bottom: 20,
+                child: FloatingActionButton(
+                  onPressed: () {},
+                  backgroundColor: const Color(0xFF0066CC),
+                  elevation: 4,
+                  shape: const CircleBorder(),
+                  child: const Icon(Icons.add, color: Colors.white, size: 28),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
