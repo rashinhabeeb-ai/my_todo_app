@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mytodo/home.dart';
 import 'login_page.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -17,21 +18,26 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isPasswordVisible = false;
   bool _isConfmPasswordVisible = false;
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _nameController.dispose();
+  //   _emailController.dispose();
+  //   _passwordController.dispose();
+  //   _confirmPasswordController.dispose();
+  //   super.dispose();
+  // }
+
 
   void _handleSignUp() {
     if (_formKey.currentState!.validate()) {
-      // Process registration logic here
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Creating account...')),
+        const SnackBar(content: Text('Creating account...'),
+        duration: Duration(seconds: 2),),
+
       );
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => Home(),),
+            (route) => false,);
     }
   }
 
@@ -76,9 +82,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
                   TextFormField(
                     controller: _nameController,
+                    textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                       labelText: 'Full Name',
                       prefixIcon: const Icon(Icons.person_outline),
+
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -96,6 +104,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                   TextFormField(
                     controller: _emailController,
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email Address',
@@ -121,6 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                   TextFormField(
                     controller: _passwordController,
+                    textInputAction: TextInputAction.next,
                     obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: 'Password',
@@ -156,6 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                   TextFormField(
                     controller: _confirmPasswordController,
+                    textInputAction: TextInputAction.done,
                     obscureText: !_isConfmPasswordVisible,
                     decoration: InputDecoration(
                       labelText: 'Confirm Password',
