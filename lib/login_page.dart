@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/home.dart';
+import 'bottom_sheet.dart';
 import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
       );
       Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => Home(),),
+        MaterialPageRoute(builder: (context) => BottomSheetPage(),),
             (route) => false,);
     }
   }

@@ -8,8 +8,8 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  late bool isDarkMode;
   late final VoidCallback onToggleTheme;
+  bool isSwitched = true;
 
 
   @override
@@ -17,7 +17,6 @@ class _SettingsState extends State<Settings> {
     late double h = MediaQuery.of(context).size.height;
     late double w = MediaQuery.of(context).size.width;
 
-    bool isSwitched = false;
     return SafeArea(
       child: Scaffold(
         body:Center(
@@ -26,7 +25,7 @@ class _SettingsState extends State<Settings> {
                 height: h*1,
                 clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color:isSwitched? Colors.white: Colors.black,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.shade400,
@@ -71,12 +70,12 @@ class _SettingsState extends State<Settings> {
                           height: h*0.4,
                           width: w*1,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              20),
-                            color: Colors.white,
+                            border: Border.all(color: isSwitched? Colors.white: Colors.white),
+                            borderRadius: BorderRadius.circular(20),
+                              color:isSwitched? Colors.white: Colors.black,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey,
+                                color: isSwitched? Colors.grey:Colors.black,
                                 blurRadius:2,
                                 offset: Offset(1, 4))
                             ]
@@ -99,21 +98,19 @@ class _SettingsState extends State<Settings> {
                                       child: Container(
                                       height: h*0.05,
                                       width: w*0.04,
-                                      child: Icon(Icons.edit_outlined,color: Colors.white,),
                                       decoration: BoxDecoration(
                                         color: Color(0xff2170E4),
                                         borderRadius: BorderRadius.all(Radius.circular(20)),
                                           border: Border.all(
                                             width: w*0.009,
-                                            color: Colors.white
+                                            color:isSwitched? Colors.white: Colors.black,
                                           ),boxShadow: [
                                             BoxShadow(
-                                                color: Colors.grey,
-                                                blurRadius:2,
-                                                offset: Offset(1, 4))
-                                          ]
+
+                                            )]
                                       ),
-                                                            ),
+                                      child: Icon(Icons.edit_outlined,color: Colors.white,),
+                                      ),
                                     ),]
                                 ),
                               ),
@@ -122,10 +119,10 @@ class _SettingsState extends State<Settings> {
                               Text('Janan',style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: w*0.09,
-                                color: Color(0xff0B1C30)
+                                color:isSwitched? Colors.black: Colors.white,
                               ),), Text("jana@gmail.com",
                                 style: TextStyle(
-                                  color: Color(0xff727785),
+                                  color:isSwitched? Colors.black: Colors.white,
                                 ),
                               ),
                               SizedBox(height: h*0.03),
@@ -159,7 +156,8 @@ class _SettingsState extends State<Settings> {
                           height: h*0.08,
                           width: w*1,
                           decoration: BoxDecoration(
-                            color: Color(0xffEFF4FF),
+                            border: Border.all(color: isSwitched? Color(0xffEFF4FF): Colors.white),
+                            color:isSwitched? Color(0xffEFF4FF) : Colors.black,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
@@ -170,9 +168,10 @@ class _SettingsState extends State<Settings> {
                                   height: h*0.055,
                                   width: w*0.11,
                                   decoration: BoxDecoration(
+                                    border: Border.all(color: isSwitched? Colors.white: Colors.white),
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xffD8E2FF),),
-
+                                      color:isSwitched?  Color(0xffD8E2FF): Colors.black,
+                                      ),
                                   child: Center(
                                     child: Image.asset('assets/images/Icon.png'),
                                   ),),
@@ -186,25 +185,36 @@ class _SettingsState extends State<Settings> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text('Theme',style: TextStyle(
-                                        color: Color(0xff0B1C30),
+                                          color:isSwitched? Colors.black: Colors.white,
                                         fontSize: w*0.04
                                       ),),
                                       Text('Switch between light and dark',
-                                      style: TextStyle(color: Color(0xff727785)),
+                                      style: TextStyle(
+                                        color:isSwitched? Colors.black: Colors.white,
+                                      ),
                                       )
                                     ],
                                   ),
                                 ),
                               ),
                               SizedBox(width: w*0.03,),
-                              Switch(
-                                  value: isSwitched,
-                                onChanged: (value) {
-                                    setState(() {
-                                      isSwitched = value;
-                                    });
+                              IconButton(
+                                icon: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 300),
+                                  transitionBuilder: (child, animation) => RotationTransition(
+                                    turns: animation,
+                                    child: ScaleTransition(scale: animation, child: child),
+                                  ),
+                                  child: isSwitched
+                                      ? const Icon(Icons.nightlight_round, key: ValueKey('dark'), color: Colors.amber)
+                                      : const Icon(Icons.wb_sunny_rounded, key: ValueKey('light'), color: Colors.orange),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isSwitched = !isSwitched;
+                                  });
                                 },
-                              ),
+                              )
                             ],
                           ),
                         ),

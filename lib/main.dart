@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            fontFamily: 'BrandonGrotesque'
+          brightness: Brightness.dark,
+        ),
+        darkTheme: ThemeData.dark(
+
         ),
         debugShowCheckedModeBanner: false,
         home:LoginPage(),

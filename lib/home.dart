@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
+import 'package:intl/intl.dart';
 import 'add_task.dart';
 
-// Task Model Class
+
+/// Task Model Class
 class TaskItem {
   final String title;
   final String description;
@@ -28,6 +29,37 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int selectindex = 0;
+
+
+  ///To set current Date
+  String get _currentDate{
+    return DateFormat('EEE, d MMM yyyy').format(DateTime.now());
+  }
+
+
+  ///To set current Time
+  // late String _currentTime;
+  // Timer? _timer;
+  //
+  // @override
+  // void initState(){
+  //   super.initState();
+  //
+  //   _updateTime();
+  //
+  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     _updateTime();
+  //   },);
+  // }
+  // void _updateTime() {
+  //   if (mounted) {
+  //     setState(() {
+  //       _currentTime = DateFormat('hh:mm:ss a').format(DateTime.now());
+  //     });
+  //   }
+  // }
+
+
 
   List<TaskItem> tasksList = [
     TaskItem(
@@ -62,7 +94,9 @@ class _HomeState extends State<Home> {
         return AlertDialog(
           title: Text('Delete Task',
             style: TextStyle(
-
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color:Colors.black,
             ),),
           actions: [
             TextButton(onPressed: () {
@@ -71,11 +105,21 @@ class _HomeState extends State<Home> {
                 tasksList.removeAt(index);
               });
             },
-                child: Text("YES")),
+                child: Text("YES",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color:Colors.black,
+                  ),)),
             TextButton(onPressed: () {
               Navigator.pop(context);
             },
-                child: Text("NO")),
+                child: Text("NO",
+                  style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color:Colors.black,
+                ),)),
           ],
         );
       },);
@@ -113,7 +157,7 @@ class _HomeState extends State<Home> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Column(
+                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -126,7 +170,7 @@ class _HomeState extends State<Home> {
                             ),
                             SizedBox(height: 2),
                             Text(
-                              'July 18, 2026',
+                              _currentDate,
                               style: TextStyle(
                                 fontSize: 13,
                                 color: Color(0xFF6B7280),
@@ -134,7 +178,7 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
-                        const CircleAvatar(
+                         CircleAvatar(
                           radius: 18,
                           backgroundImage: NetworkImage(
                             'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80',
@@ -142,23 +186,23 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                     SizedBox(height: 16),
 
                     TextField(
                       decoration: InputDecoration(
                         hintText: 'Search tasks...',
-                        hintStyle: const TextStyle(
+                        hintStyle:  TextStyle(
                           color: Color(0xFF94A3B8),
                           fontSize: 13,
                         ),
-                        prefixIcon: const Icon(
+                        prefixIcon:  Icon(
                           Icons.search,
                           color: Color(0xFF9CA3AF),
                           size: 20,
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFF1F5F9),
-                        contentPadding: const EdgeInsets.symmetric(
+                        fillColor:  Color(0xFFF1F5F9),
+                        contentPadding:  EdgeInsets.symmetric(
                           vertical: 10,
                         ),
                         border: OutlineInputBorder(
@@ -167,14 +211,14 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                     SizedBox(height: 16),
                     SizedBox(
                       height: 40,
                       child: ListView.separated(
                         itemCount: options.length,
                         scrollDirection: Axis.horizontal,
                         separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(width: 12);
+                          return  SizedBox(width: 12);
                         },
                         itemBuilder: (BuildContext context, int index) {
                           final bool isSelected = selectindex == index;
@@ -186,14 +230,14 @@ class _HomeState extends State<Home> {
                               });
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
+                              padding:  EdgeInsets.symmetric(
                                 horizontal: 14,
                                 vertical: 8,
                               ),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? const Color(0xFF0066CC)
-                                    : const Color(0xFFE2E8F0),
+                                    ?  Color(0xFF0066CC)
+                                    :  Color(0xFFE2E8F0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -203,7 +247,7 @@ class _HomeState extends State<Home> {
                                   fontWeight: FontWeight.w500,
                                   color: isSelected
                                       ? Colors.white
-                                      : const Color(0xFF475569),
+                                      :  Color(0xFF475569),
                                 ),
                               ),
                             ),
@@ -211,9 +255,9 @@ class _HomeState extends State<Home> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
+                     SizedBox(height: 20),
 
-                    const Text(
+                     Text(
                       'My Tasks',
                       style: TextStyle(
                         fontSize: 16,
@@ -221,15 +265,15 @@ class _HomeState extends State<Home> {
                         color: Color(0xFF1E293B),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                     SizedBox(height: 12),
 
                     // DYNAMIC TASK LIST
                     ListView.separated(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics:  NeverScrollableScrollPhysics(),
                       itemCount: tasksList.length,
                       separatorBuilder: (context, index) =>
-                      const SizedBox(height: 16),
+                       SizedBox(height: 16),
                       itemBuilder: (context, index) {
                         final task = tasksList[index];
                         return Slidable(
@@ -267,17 +311,15 @@ class _HomeState extends State<Home> {
                   height: 48,
                   child: FloatingActionButton(
                     onPressed: () async {
-                      // Receive the new TaskItem from AddTaskPage
                       final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AddTaskPage(),
+                          builder: (context) =>  AddTaskPage(),
                         ),
                       );
 
                       if (result != null) {
                         setState(() {
-                          // Handle either a TaskItem object or a Map passed back
                           if (result is TaskItem) {
                             tasksList.insert(0, result);
                           } else if (result is Map<String, dynamic>) {
@@ -294,10 +336,10 @@ class _HomeState extends State<Home> {
                         });
                       }
                     },
-                    backgroundColor: const Color(0xFF0066CC),
-                    shape: const CircleBorder(),
+                    backgroundColor:  Color(0xFF0066CC),
+                    shape:  CircleBorder(),
                     elevation: 4,
-                    child: const Icon(Icons.add, color: Colors.white, size: 24),
+                    child:  Icon(Icons.add, color: Colors.white, size: 24),
                   ),
                 ),
               ),
